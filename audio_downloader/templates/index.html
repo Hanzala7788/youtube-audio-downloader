@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>This is an audio downloader</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <label for="video_url">Enter YouTube video URL:</label>
+    <input type="text" name="video_url" id="video_url" placeholder="https://www.youtube.com/watch?v=example">
+    <button type="submit">Download Audio</button>
+</form>
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+{% if audio_file %}
+    <p>Audio file saved at: <a href="{% url 'download_audio_file' audio_file.id %}" download>{{ audio_file.audio_file.name }}</a></p>
+{% endif %}
+{% endblock %}
