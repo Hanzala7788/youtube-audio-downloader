@@ -1,4 +1,4 @@
-Sure! Here's a step-by-step guide in Markdown format:
+Here's a step-by-step guide:
 
 # Django Audio Downloader Project
 
