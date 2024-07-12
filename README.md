@@ -1,42 +1,55 @@
-Django Audio Downloader Project
+Sure! Here's a step-by-step guide in Markdown format:
+
+# Django Audio Downloader Project
+
 This guide will walk you through setting up a Django project that allows users to download audio from YouTube, save it in the database, and provide a download link through the browser.
 
-Prerequisites
-Ensure you have the following installed:
+## Prerequisites
 
-Python
-Django
-yt-dlp
-moviepy
-1. Setting Up the Project
-Create a Django Project
-sh
-Copy code
+Ensure you have the following installed:
+- Python
+- Django
+- yt-dlp
+- moviepy
+
+## 1. Setting Up the Project
+
+### Create a Django Project
+
+```sh
 django-admin startproject audio_downloader
 cd audio_downloader
-Create a Django App
-sh
-Copy code
-python manage.py startapp downloader
-Install Required Libraries
-sh
-Copy code
-pip install django yt-dlp moviepy
-Configure Installed Apps
-Add the new app to your INSTALLED_APPS in settings.py.
+```
 
-python
-Copy code
+### Create a Django App
+
+```sh
+python manage.py startapp downloader
+```
+
+### Install Required Libraries
+
+```sh
+pip install django yt-dlp moviepy
+```
+
+### Configure Installed Apps
+
+Add the new app to your `INSTALLED_APPS` in `settings.py`.
+
+```python
 # settings.py
 INSTALLED_APPS = [
     ...
     'downloader',
 ]
-2. Create the AudioFile Model
+```
+
+## 2. Create the AudioFile Model
+
 Define a model to store audio file information.
 
-python
-Copy code
+```python
 # downloader/models.py
 
 from django.db import models
@@ -48,11 +61,13 @@ class AudioFile(models.Model):
 
     def __str__(self):
         return self.audio_file.name
-3. Create the Views
+```
+
+## 3. Create the Views
+
 Create views to handle downloading, saving, and serving the audio files.
 
-python
-Copy code
+```python
 # downloader/views.py
 
 from django.shortcuts import render, get_object_or_404
@@ -124,11 +139,13 @@ def download_audio_file(request, file_id):
         return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
     else:
         raise Http404("File not found")
-4. Create the HTML Template
+```
+
+## 4. Create the HTML Template
+
 Create an HTML template for the form where users can input a YouTube URL.
 
-html
-Copy code
+```html
 <!-- downloader/templates/index.html -->
 
 {% extends 'base.html' %}
@@ -147,11 +164,13 @@ Copy code
     <p>Audio file saved at: <a href="{% url 'download_audio_file' audio_file.id %}" download>{{ audio_file.audio_file.name }}</a></p>
 {% endif %}
 {% endblock %}
-5. Configure URLs
+```
+
+## 5. Configure URLs
+
 Add the necessary URL patterns to handle requests.
 
-python
-Copy code
+```python
 # downloader/urls.py
 
 from django.urls import path
@@ -161,10 +180,11 @@ urlpatterns = [
     path('', index, name='index'),
     path('download/<int:file_id>/', download_audio_file, name='download_audio_file'),
 ]
-Update the project's main urls.py to include the app's URLs and configure media file handling.
+```
 
-python
-Copy code
+Update the project's main `urls.py` to include the app's URLs and configure media file handling.
+
+```python
 # audio_downloader/urls.py
 
 from django.conf import settings
@@ -176,27 +196,38 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('downloader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-6. Configure Settings
-Ensure you have media settings configured in settings.py.
+```
 
-python
-Copy code
+## 6. Configure Settings
+
+Ensure you have media settings configured in `settings.py`.
+
+```python
 # settings.py
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-7. Apply Migrations
+```
+
+## 7. Apply Migrations
+
 Create and apply the migrations to set up your database schema.
 
-sh
-Copy code
+```sh
 python manage.py makemigrations
 python manage.py migrate
-8. Run the Development Server
+```
+
+## 8. Run the Development Server
+
 Start the Django development server to test your application.
 
-sh
-Copy code
+```sh
 python manage.py runserver
-9. Test Your Application
-Open your browser and navigate to http://127.0.0.1:8000/ to access the audio downloader form. Enter a YouTube URL and submit the form to download and save the audio file. You should see a link to download the saved audio file.
+```
+
+## 9. Test Your Application
+
+Open your browser and navigate to `http://127.0.0.1:8000/` to access the audio downloader form. Enter a YouTube URL and submit the form to download and save the audio file. You should see a link to download the saved audio file.
+
+---
